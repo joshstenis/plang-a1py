@@ -1,4 +1,3 @@
-import os
 from enum import Enum
 
 class Token(Enum):
@@ -53,4 +52,7 @@ class Lexer(object):
         # Skips whitespace in stream
 
 def main():
-    
+    # Print each token in while loop
+
+if __name__ == "__main__":
+    main()
