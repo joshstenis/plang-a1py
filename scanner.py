@@ -116,10 +116,12 @@ class Lexer(object):
             return Token.K_PRINT
         elif self.curr.isdigit():
             return Token.L_INTEGER
-        elif self.curr.isalpha():
+        elif self.curr[0] == "@" and self.curr[1].isalpha():
             return Token.T_ID
         elif self.eof.match(self.curr):
             return Token.T_EOF
+        else:
+            return self.curr
 
     def loadWord(self, yyin):
         self.yytext = yyin.split(" ")
