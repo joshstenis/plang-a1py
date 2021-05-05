@@ -1,3 +1,4 @@
+import io, re
 from enum import Enum
 
 class Token(Enum):
@@ -43,10 +44,43 @@ class Token(Enum):
 class Lexer(object):
     def __init__(self, stream):
         self.stream = stream
-        self.current = None
+        self.curr = None
+        self.l_float = re.compile('\d+(\.\d+)?')
 
     def nextToken(self):
-        # Next token in stream
+        if self.curr is None:
+            return None
+
+        if self.l_float.match(self.curr):
+            return L_FLOAT
+        elif self.curr == "=":
+            return OP_ASSIGN
+        elif self.curr == "+":
+            return OP_ADD
+        elif self.curr == "-":
+            return OP_SUB
+        elif self.curr == "*":
+            return OP_MUL
+        elif self.curr == "/":
+            return OP_DIV
+        elif self.curr == "<":
+            return OP_LT
+        elif self.curr == ">":
+            return OP_GT
+        elif self.curr == "<=":
+            return OP_LEQ
+        elif self.curr == ">=":
+            return OP_GEQ
+        elif self.curr == "==":
+            return OP_EQ
+        elif self.curr == "~=":
+            return OP_DIFF
+        elif self.curr == "++":
+            return OP_PLUSPLUS
+        elif self.curr == "+=":
+            return OP_ADDINC
+        elif self.curr.isdigit():
+            return L_INTEGER
 
     def skipWhitespace(self):
         # Skips whitespace in stream
