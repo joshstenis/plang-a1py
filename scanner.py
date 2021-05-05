@@ -42,8 +42,8 @@ class Token(Enum):
     T_EOF = 280
 
 class Lexer(object):
-    def __init__(self, stream):
-        self.stream = stream
+    def __init__(self):
+        self.yytext = None
         self.curr = None
         self.idx = 0
         self.l_float = re.compile('\d+\.\d+')
@@ -57,6 +57,7 @@ class Lexer(object):
             pass
         elif self.curr == "\n":
             pass
+
         elif self.l_float.match(self.curr):
             return Token.L_FLOAT
         elif self.curr == "=":
@@ -119,27 +120,21 @@ class Lexer(object):
             return Token.T_ID
         elif self.eof.match(self.curr):
             return Token.T_EOF
-    
-    def boundWord(self):
-        word = self.curr
-        if self.curr is None:
-            word = self.stream.split(" ")[0]
-        return word
 
-    def loadWord(self):
-        if self.idx >= len(self.stream):
-            return None
-        self.curr = self.boundWord()
-        self.idx += len(self.curr)
-        return self.rules()
+    def loadWord(self, yyin):
+        self.yytext = yyin.split(" ")
+        tok = []
+        for i in self.yytext:
+            self.curr = i
+            tok.append(self.rules())
+        return tok
 
 def main(argv):
-    scnr = Lexer(input())
+    scnr = Lexer()
     tok = None
     while True:
-        if tok is not None:
-            print(tok)
-        tok = scnr.loadWord()
+        tok = scnr.loadWord(input())
+        print(tok)
 
 if __name__ == "__main__":
     main(sys.argv)
