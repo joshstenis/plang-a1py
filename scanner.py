@@ -129,7 +129,7 @@ class Lexer(object):
             tok.append(self.rules())
         return tok
 
-def main(argv):
+def main():
     scnr = Lexer()
     tok = None
     while True:
@@ -137,4 +137,4 @@ def main(argv):
         print(tok)
 
 if __name__ == "__main__":
-    main(sys.argv)
+    main()
