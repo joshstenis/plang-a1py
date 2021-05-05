@@ -45,7 +45,6 @@ class Lexer(object):
     def __init__(self):
         self.yytext = None
         self.curr = None
-        self.idx = 0
         self.l_float = re.compile('\d+\.\d+')
         self.comment = re.compile('\/\/.*$')
         self.eof = re.compile('<<EOF>>')
