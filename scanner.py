@@ -45,96 +45,100 @@ class Lexer(object):
     def __init__(self, stream):
         self.stream = stream
         self.curr = None
-        self.modifier = 0
-        self.l_float = re.compile('\d+(\.\d+)?')
+        self.idx = 0
+        self.l_float = re.compile('\d+\.\d+')
         self.comment = re.compile('\/\/.*$')
         self.eof = re.compile('<<EOF>>')
 
-    def nextToken(self):
+    def rules(self):
         if self.curr is None:
             return None
 
-        if comment.match(self.curr):
+        if self.comment.match(self.curr):
             pass
         elif self.curr.isspace():
             pass
         elif self.curr == "\n":
             pass
         elif self.l_float.match(self.curr):
-            return L_FLOAT
+            return Token.L_FLOAT
         elif self.curr == "=":
-            return OP_ASSIGN
+            return Token.OP_ASSIGN
         elif self.curr == "+":
-            return OP_ADD
+            return Token.OP_ADD
         elif self.curr == "-":
-            return OP_SUB
+            return Token.OP_SUB
         elif self.curr == "*":
-            return OP_MUL
+            return Token.OP_MUL
         elif self.curr == "/":
-            return OP_DIV
+            return Token.OP_DIV
         elif self.curr == ";":
             return ";"
         elif self.curr == "<":
-            return OP_LT
+            return Token.OP_LT
         elif self.curr == ">":
-            return OP_GT
+            return Token.OP_GT
         elif self.curr == "<=":
-            return OP_LEQ
+            return Token.OP_LEQ
         elif self.curr == ">=":
-            return OP_GEQ
+            return Token.OP_GEQ
         elif self.curr == "==":
-            return OP_EQ
+            return Token.OP_EQ
         elif self.curr == "~=":
-            return OP_DIFF
+            return Token.OP_DIFF
         elif self.curr == "++":
-            return OP_PLUSPLUS
+            return Token.OP_PLUSPLUS
         elif self.curr == "+=":
-            return OP_ADDINC
-        elif self.curr.isdigit():
-            return L_INTEGER
+            return Token.OP_ADDINC
         elif self.curr == "main":
-            return K_MAIN
+            return Token.K_MAIN
         elif self.curr == "integer":
-            return K_INTEGER
+            return Token.K_INTEGER
         elif self.curr == "float":
-            return K_FLOAT
+            return Token.K_FLOAT
         elif self.curr == "foreach":
-            return K_FOREACH
+            return Token.K_FOREACH
         elif self.curr == "begin":
-            return K_BEGIN
+            return Token.K_BEGIN
         elif self.curr == "end":
-            return K_END
+            return Token.K_END
         elif self.curr == "repeat":
-            return K_REPEAT
+            return Token.K_REPEAT
         elif self.curr == "until":
-            return K_UNTIL
+            return Token.K_UNTIL
         elif self.curr == "then":
-            return K_THEN
+            return Token.K_THEN
         elif self.curr == "while":
-            return K_WHILE
+            return Token.K_WHILE
         elif self.curr == "declare":
-            return K_DECLARE
+            return Token.K_DECLARE
         elif self.curr == "if":
-            return K_IF
+            return Token.K_IF
         elif self.curr == "print":
-            return K_PRINT
-        elif eof.match(self.curr):
-            return T_EOF
+            return Token.K_PRINT
+        elif self.curr.isdigit():
+            return Token.L_INTEGER
         elif self.curr.isalpha():
-            return T_ID
+            return Token.T_ID
+        elif self.eof.match(self.curr):
+            return Token.T_EOF
 
-    def getWord(self):
-        if self.modifier >= len(stream):
+    def loadWord(self):
+        if self.idx >= len(self.stream):
             return None
+        self.curr = self.stream[self.idx:]
+        self.idx += 1
+
+        return self.rules()
 
 def main(argv):
-    prgm = argv[0]
+    prgm = input()
 
     scnr = Lexer(prgm)
-    tok = scnr.nextToken()
+    tok = scnr.loadWord()
     while tok is not None:
         print(tok)
-        tok = scnr.nextToken()
+        tok = scnr.loadWord()
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+    main(sys.argv)
