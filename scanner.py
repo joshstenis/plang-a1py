@@ -1,4 +1,4 @@
-import io, re
+import io, re, sys
 from enum import Enum
 
 class Token(Enum):
@@ -51,6 +51,8 @@ class Lexer(object):
         if self.curr is None:
             return None
 
+        self.skipWhitespace()
+
         if self.l_float.match(self.curr):
             return L_FLOAT
         elif self.curr == "=":
@@ -81,12 +83,52 @@ class Lexer(object):
             return OP_ADDINC
         elif self.curr.isdigit():
             return L_INTEGER
+        elif self.curr == "main":
+            return K_MAIN
+        elif self.curr == "integer":
+            return K_INTEGER
+        elif self.curr == "float":
+            return K_FLOAT
+        elif self.curr == "foreach":
+            return K_FOREACH
+        elif self.curr == "begin":
+            return K_BEGIN
+        elif self.curr == "end":
+            return K_END
+        elif self.curr == "repeat":
+            return K_REPEAT
+        elif self.curr == "until":
+            return K_UNTIL
+        elif self.curr == "then":
+            return K_THEN
+        elif self.curr == "while":
+            return K_WHILE
+        elif self.curr == "declare":
+            return K_DECLARE
+        elif self.curr == "if":
+            return K_IF
+        elif self.curr == "print":
+            return K_PRINT
+        elif self.curr.isalpha():
+            return T_ID
+        else:
+            return T_EOF
 
     def skipWhitespace(self):
-        # Skips whitespace in stream
+        while self.curr.isspace():
+            getWord()
 
-def main():
-    # Print each token in while loop
+    def getWord(self):
+        # iterate through stream
+
+def main(argv):
+    prgm = argv[0]
+
+    scnr = Lexer(prgm)
+    tok = scnr.nextToken()
+    while tok is not None:
+        print(tok)
+        tok = scnr.nextToken()
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])
