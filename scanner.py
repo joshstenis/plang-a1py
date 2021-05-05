@@ -117,10 +117,10 @@ class Lexer(object):
             return K_IF
         elif self.curr == "print":
             return K_PRINT
-        elif self.curr.isalpha():
-            return T_ID
         elif eof.match(self.curr):
             return T_EOF
+        elif self.curr.isalpha():
+            return T_ID
 
     def getWord(self):
         # iterate through stream
