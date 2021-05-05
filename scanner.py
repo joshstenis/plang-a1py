@@ -45,6 +45,7 @@ class Lexer(object):
     def __init__(self, stream):
         self.stream = stream
         self.curr = None
+        self.modifier = 0
         self.l_float = re.compile('\d+(\.\d+)?')
         self.comment = re.compile('\/\/.*$')
         self.eof = re.compile('<<EOF>>')
@@ -123,7 +124,8 @@ class Lexer(object):
             return T_ID
 
     def getWord(self):
-        # iterate through stream
+        if self.modifier >= len(stream):
+            return None
 
 def main(argv):
     prgm = argv[0]
