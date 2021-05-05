@@ -46,14 +46,20 @@ class Lexer(object):
         self.stream = stream
         self.curr = None
         self.l_float = re.compile('\d+(\.\d+)?')
+        self.comment = re.compile('\/\/.*$')
+        self.eof = re.compile('<<EOF>>')
 
     def nextToken(self):
         if self.curr is None:
             return None
 
-        self.skipWhitespace()
-
-        if self.l_float.match(self.curr):
+        if comment.match(self.curr):
+            pass
+        elif self.curr.isspace():
+            pass
+        elif self.curr == "\n":
+            pass
+        elif self.l_float.match(self.curr):
             return L_FLOAT
         elif self.curr == "=":
             return OP_ASSIGN
@@ -113,12 +119,8 @@ class Lexer(object):
             return K_PRINT
         elif self.curr.isalpha():
             return T_ID
-        else:
+        elif eof.match(self.curr):
             return T_EOF
-
-    def skipWhitespace(self):
-        while self.curr.isspace():
-            getWord()
 
     def getWord(self):
         # iterate through stream
