@@ -51,9 +51,6 @@ class Lexer(object):
         self.eof = re.compile('<<EOF>>')
 
     def rules(self):
-        if self.curr is None:
-            return None
-
         if self.comment.match(self.curr):
             pass
         elif self.curr.isspace():
@@ -122,22 +119,26 @@ class Lexer(object):
             return Token.T_ID
         elif self.eof.match(self.curr):
             return Token.T_EOF
+    
+    def boundWord(self):
+        word = self.curr
+        if self.curr is None:
+            word = self.stream.split(" ")[0]
+        return word
 
     def loadWord(self):
         if self.idx >= len(self.stream):
             return None
-        self.curr = self.stream[self.idx:]
-        self.idx += 1
-
+        self.curr = self.boundWord()
+        self.idx += len(self.curr)
         return self.rules()
 
 def main(argv):
-    prgm = input()
-
-    scnr = Lexer(prgm)
-    tok = scnr.loadWord()
-    while tok is not None:
-        print(tok)
+    scnr = Lexer(input())
+    tok = None
+    while True:
+        if tok is not None:
+            print(tok)
         tok = scnr.loadWord()
 
 if __name__ == "__main__":
