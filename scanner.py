@@ -65,6 +65,8 @@ class Lexer(object):
             return OP_MUL
         elif self.curr == "/":
             return OP_DIV
+        elif self.curr == ";":
+            return ";"
         elif self.curr == "<":
             return OP_LT
         elif self.curr == ">":
