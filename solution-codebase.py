@@ -59,60 +59,60 @@ class Lexer(object):
 
         elif self.l_float.match(self.curr):
             return Token.L_FLOAT
-        elif self.curr == "=":
-            return Token.OP_ASSIGN
-        elif self.curr == "+":
-            return Token.OP_ADD
-        elif self.curr == "-":
-            return Token.OP_SUB
-        elif self.curr == "*":
-            return Token.OP_MUL
-        elif self.curr == "/":
-            return Token.OP_DIV
-        elif self.curr == ";":
-            return ";"
-        elif self.curr == "<":
-            return Token.OP_LT
-        elif self.curr == ">":
-            return Token.OP_GT
-        elif self.curr == "<=":
-            return Token.OP_LEQ
-        elif self.curr == ">=":
+        elif (_ = self.curr.find("<=")) is not -1:
+            return [Token.OP_LEQ, ]
+        elif self.curr.find(">=") is not -1:
             return Token.OP_GEQ
-        elif self.curr == "==":
+        elif self.curr.find("==") is not -1:
             return Token.OP_EQ
-        elif self.curr == "~=":
+        elif self.curr.find("~=") is not -1:
             return Token.OP_DIFF
-        elif self.curr == "++":
+        elif self.curr.find("++") is not -1:
             return Token.OP_PLUSPLUS
-        elif self.curr == "+=":
+        elif self.curr.find("+=") is not -1:
             return Token.OP_ADDINC
-        elif self.curr == "main":
-            return Token.K_MAIN
-        elif self.curr == "integer":
+        elif self.curr.find("=") is not -1:
+            return Token.OP_ASSIGN
+        elif self.curr.find("+") is not -1:
+            return Token.OP_ADD
+        elif self.curr.find("-") is not -1:
+            return Token.OP_SUB
+        elif self.curr.find("*") is not -1:
+            return Token.OP_MUL
+        elif self.curr.find("/") is not -1:
+            return Token.OP_DIV
+        elif self.curr.find(";") is not -1:
+            return ";"
+        elif self.curr.find("<") is not -1:
+            return Token.OP_LT
+        elif self.curr.find(">") is not -1:
+            return Token.OP_GT
+        elif self.curr.find("integer") is not -1:
             return Token.K_INTEGER
-        elif self.curr == "float":
-            return Token.K_FLOAT
-        elif self.curr == "foreach":
-            return Token.K_FOREACH
-        elif self.curr == "begin":
-            return Token.K_BEGIN
-        elif self.curr == "end":
-            return Token.K_END
-        elif self.curr == "repeat":
+        elif self.curr.find("repeat") is not -1:
             return Token.K_REPEAT
-        elif self.curr == "until":
-            return Token.K_UNTIL
-        elif self.curr == "then":
-            return Token.K_THEN
-        elif self.curr == "while":
-            return Token.K_WHILE
-        elif self.curr == "declare":
+        elif self.curr.find("declare") is not -1:
             return Token.K_DECLARE
-        elif self.curr == "if":
-            return Token.K_IF
-        elif self.curr == "print":
+        elif self.curr.find("print") is not -1:
             return Token.K_PRINT
+        elif self.curr.find("float") is not -1:
+            return Token.K_FLOAT
+        elif self.curr.find("foreach") is not -1:
+            return Token.K_FOREACH
+        elif self.curr.find("while") is not -1:
+            return Token.K_WHILE
+        elif self.curr.find("until") is not -1:
+            return Token.K_UNTIL
+        elif self.curr.find("begin") is not -1:
+            return Token.K_BEGIN
+        elif self.curr.find("main") is not -1:
+            return Token.K_MAIN
+        elif self.curr.find("then") is not -1:
+            return Token.K_THEN
+        elif self.curr.find("end") is not -1:
+            return Token.K_END
+        elif self.curr.find("if") is not -1:
+            return Token.K_IF
         elif self.curr.isdigit():
             return Token.L_INTEGER
         elif self.curr[0] == "@" and self.curr[1].isalpha():
@@ -124,8 +124,12 @@ class Lexer(object):
 
     # def matchToken(self):
     #     init = self.curr
-    #     while self.curr is not None:
-    #         if self.curr.find()
+    #     ret, tok = []
+    #     while len(self.curr) > 0:
+    #         ret = self.rules()
+    #         tok.append(ret[0])
+    #         self.curr = self.curr[ret[1]:]
+    #     return tok
 
     def loadWord(self, yyin):
         self.yytext = yyin.split(" ")
