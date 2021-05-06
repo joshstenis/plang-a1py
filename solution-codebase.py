@@ -122,12 +122,21 @@ class Lexer(object):
         else:
             return self.curr
 
+    def matchToken(self):
+        word = self.curr
+        init = self.curr
+        while len(word) > 0:
+            self.curr = word.find(
+            if self.rules() is not self.curr:
+                return self.rules()
+            word = word[:-1]
+
     def loadWord(self, yyin):
         self.yytext = yyin.split(" ")
         tok = []
         for i in self.yytext:
             self.curr = i
-            tok.append(self.rules())
+            tok.append(self.matchToken())
         return tok
 
 def main():
